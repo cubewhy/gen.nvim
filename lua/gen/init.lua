@@ -212,7 +212,7 @@ local function create_window(cmd, opts)
         vim.cmd("vnew gen.nvim")
         setup_window()
     else
-        vim.cmd("new gen.nvim")
+        vim.cmd("edit gen.nvim")
         setup_window()
     end
     vim.keymap.set("n", "<esc>", function()
