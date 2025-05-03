@@ -208,8 +208,15 @@ local function create_window(cmd, opts)
     elseif display_mode == "horizontal-split" then
         vim.cmd("split gen.nvim")
         setup_window()
-    else
+    elseif display_mode == "vertical-split" then
         vim.cmd("vnew gen.nvim")
+        setup_window()
+    elseif display_mode == "no-split" then
+        vim.cmd("edit gen.nvim")
+        setup_window()
+    else
+        vim.notify("Gen.nvim warning : Invalid display mode specified.", vim.log.levels.WARN)
+        vim.cmd("edit gen.nvim")
         setup_window()
     end
     vim.keymap.set("n", "<esc>", function()
