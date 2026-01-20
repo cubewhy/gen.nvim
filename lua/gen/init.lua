@@ -94,7 +94,7 @@ local function close_window(opts)
         if not extracted then
             if not opts.no_auto_close then
                 vim.api.nvim_win_hide(globals.float_win)
-                if globals.result_buffer ~= nil then
+                if globals.result_buffer ~= nil and vim.api.nvim_buf_is_valid(globals.result_buffer) then
                     vim.api.nvim_buf_delete(globals.result_buffer,
                                             {force = true})
                 end
@@ -119,7 +119,7 @@ local function close_window(opts)
         if globals.float_win ~= nil then
             vim.api.nvim_win_hide(globals.float_win)
         end
-        if globals.result_buffer ~= nil then
+        if globals.result_buffer ~= nil and vim.api.nvim_buf_is_valid(globals.result_buffer) then
             vim.api.nvim_buf_delete(globals.result_buffer, {force = true})
         end
         reset()
@@ -206,7 +206,7 @@ local function create_window(cmd, opts)
 
     local display_mode = opts.display_mode or M.display_mode
     if display_mode == "float" then
-        if globals.result_buffer then
+        if globals.result_buffer and vim.api.nvim_buf_is_valid(globals.result_buffer) then
             vim.api.nvim_buf_delete(globals.result_buffer, {force = true})
         end
         local win_opts = vim.tbl_deep_extend("force", get_window_options(opts),
@@ -428,7 +428,7 @@ M.run_command = function(cmd, opts)
                 if globals.job_id then
                     vim.fn.jobstop(globals.job_id)
                 end
-                if globals.result_buffer then
+                if globals.result_buffer and vim.api.nvim_buf_is_valid(globals.result_buffer) then
                     vim.api.nvim_buf_delete(globals.result_buffer,
                                             {force = true})
                 end
@@ -489,7 +489,7 @@ M.run_command = function(cmd, opts)
         group = group,
         callback = function()
             if globals.job_id then vim.fn.jobstop(globals.job_id) end
-            if globals.result_buffer then
+            if globals.result_buffer and vim.api.nvim_buf_is_valid(globals.result_buffer) then
                 vim.api.nvim_buf_delete(globals.result_buffer, {force = true})
             end
             reset(true) -- keep selection in case of subsequent retries
